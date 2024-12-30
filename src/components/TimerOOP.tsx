@@ -7,7 +7,7 @@ interface TimerState {
   isPaused: boolean;
 }
 
-interface TimerProps {
+export interface TimerProps {
   timerName?: string;
   timerType?: string;
 }
