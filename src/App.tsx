@@ -27,7 +27,7 @@ function App() {
   return (
     <main>
       <TopMenu />
-      <div>
+      <div className="flex flex-col place-items-center">
         {allTimers.map((item, index) => (
           <TimerOOP
             key={index}

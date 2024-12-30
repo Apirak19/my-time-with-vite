@@ -10,6 +10,7 @@ interface TimerState {
 export interface TimerProps {
   timerName?: string;
   timerType?: string;
+  prevTime?: number;
 }
 
 class TimerOOP extends Component<TimerProps, TimerState> {
