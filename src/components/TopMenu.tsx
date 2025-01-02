@@ -1,9 +1,11 @@
-import React from "react";
+import MenuButton from "./MenuButton";
 
 const TopMenu = () => {
   return (
-    <div className="flex justify-end items-center relative h-10 p-4 border-4">
-      <h4 className="w-6 h-6 bg-slate-400 rounded-lg"></h4>
+    <div className="flex justify-end items-center relative h-10 p-4 border-4 gap-2">
+      <h4>Username</h4>
+      <h4>MoreNames</h4>
+      <MenuButton />
     </div>
   );
 };

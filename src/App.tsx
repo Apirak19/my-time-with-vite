@@ -1,3 +1,4 @@
+import React from "react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import "./App.css";
 import TimerOOP, { TimerProps } from "./components/TimerOOP";
