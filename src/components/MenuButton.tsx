@@ -34,8 +34,13 @@ const MenuButton = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Create a Timer</MenuItem>
-        <MenuItem onClick={handleClose}>Create a Timer</MenuItem>
+        <MenuItem>
+          <div className="flex gap-2">
+            <h4 className="w-6 h-6 bg-slate-400 rounded-lg"></h4>
+            <h4>Username</h4>
+            <h4>MoreNames</h4>
+          </div>
+        </MenuItem>
         <MenuItem onClick={handleClose}>Create a Timer</MenuItem>
       </Menu>
     </div>
