@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import TimerOOP, { TimerProps } from "../components/TimerOOP";
 
-interface ContextType {
-  value: string;
-  setValue: (newValue: string) => void;
+interface TimerArray {
+  items: TimerOOP[];
+  addTimer: (item: TimerOOP) => void;
+  removeTimer: ()
 }
 
-const ContextA = createContext<ContextType | undefined>(undefined);
+const ContextA = createContext<TimerArray | undefined>(undefined);
 
 const ContextAProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [value, setValue] = useState("hello");
@@ -24,3 +26,5 @@ const useContextA = () => {
   }
   return context;
 };
+
+export default { ContextAProvider, useContextA };
