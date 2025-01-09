@@ -8,6 +8,7 @@ interface TimerState {
 }
 
 export interface TimerProps {
+  id: number;
   timerName?: string;
   timerType?: string;
   prevTime?: number;
@@ -15,6 +16,8 @@ export interface TimerProps {
 
 class TimerOOP extends Component<TimerProps, TimerState> {
   private interval: NodeJS.Timeout | null = null;
+
+  
 
   constructor(props: TimerProps) {
     super(props);

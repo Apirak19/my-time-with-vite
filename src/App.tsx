@@ -3,35 +3,27 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import "./App.css";
 import TimerOOP, { TimerProps } from "./components/TimerOOP";
 import TopMenu from "./components/TopMenu";
+import { useContextA } from "./context/ContextA";
 
 function App() {
-  const [allTimers, setAllTimers] = useState<TimerProps[]>([]);
-  const [timer, setTimer] = useState<TimerProps>({
-    timerName: "",
-    timerType: "",
-  });
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setTimer((prevTimer) => ({
-      ...prevTimer,
-      [name]: value,
-    }));
-  };
+  const [timerName, setTimerName] = useState<string | undefined>(undefined);
+  const [timerType, setTimerType] = useState<string | undefined>(undefined);
+  const { items, addTimer, removeTimer } = useContextA();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (timer.timerName && timer.timerType) {
-      setAllTimers((prevAllTimers) => [...prevAllTimers, timer]);
-      setTimer({ timerName: "", timerType: "" });
+    if (timerName && timerType) {
+      addTimer({ timerName: timerName, timerType: timerType });
     }
   };
   return (
     <main>
       <TopMenu />
       <div className="flex flex-col place-items-center">
-        {allTimers.map((item, index) => (
+        {items.map((item, index) => (
           <TimerOOP
             key={index}
+            id={item.id}
             timerName={item.timerName}
             timerType={item.timerType}
           />
@@ -46,16 +38,16 @@ function App() {
           type="text"
           name="timerName"
           placeholder="Timer Name"
-          value={timer.timerName}
-          onChange={handleChange}
+          value={timerName}
+          onChange={(e) => setTimerName(e.target.value)}
           required
         />
         <input
           type="text"
           name="timerType"
           placeholder="Timer Type"
-          value={timer.timerType}
-          onChange={handleChange}
+          value={timerType}
+          onChange={(e) => setTimerType(e.target.value)}
           required
         />
         <button type="submit">create a timer</button>

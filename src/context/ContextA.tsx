@@ -2,18 +2,33 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import TimerOOP, { TimerProps } from "../components/TimerOOP";
 
 interface TimerArray {
-  items: TimerOOP[];
-  addTimer: (item: TimerOOP) => void;
-  removeTimer: ()
+  items: TimerProps[];
+  addTimer: (timer: { timerName: string; timerType: string }) => void;
+  removeTimer: (id: number) => void;
 }
 
 const ContextA = createContext<TimerArray | undefined>(undefined);
 
 const ContextAProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [value, setValue] = useState("hello");
+  const [items, setItems] = useState<TimerProps[]>([]);
+  const [nextId, setNextId] = useState(1);
+
+  const addTimer = (timer: { timerName: string; timerType: string }) => {
+    const newTimer: TimerProps = {
+      id: nextId,
+      timerName: timer.timerName,
+      timerType: timer.timerType,
+    };
+    setItems((prev) => [...prev, newTimer]);
+    setNextId((prevId) => prevId + 1);
+  };
+
+  const removeTimer = (id: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
-    <ContextA.Provider value={{ value, setValue }}>
+    <ContextA.Provider value={{ items, addTimer, removeTimer }}>
       {children}
     </ContextA.Provider>
   );
@@ -27,4 +42,4 @@ const useContextA = () => {
   return context;
 };
 
-export default { ContextAProvider, useContextA };
+export { ContextAProvider, useContextA };
