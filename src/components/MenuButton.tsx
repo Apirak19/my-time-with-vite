@@ -15,25 +15,14 @@ export type MenuItem = {
 
 const MenuButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [menuItemModal, setMenuItemModal] = React.useState<MenuItem[]>([
-    {
-      name: "create a timer1",
-      isOpen: false,
-      isClose: true,
-    },
-    {
-      name: "create a timer2",
-      isOpen: false,
-      isClose: true,
-    },
-    {
-      name: "create a timer3",
-      isOpen: false,
-      isClose: true,
-    },
-  ]);
+  const [menuItemModal, setMenuItemModal] = React.useState<MenuItem>({
+    name: "create a timer1",
+    isOpen: false,
+    isClose: true,
+  });
 
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,13 +32,13 @@ const MenuButton = () => {
   };
 
   const handleModal = (index: number) => {
-    setMenuItemModal((prevState) =>
-      prevState.map((item, i) =>
-        i === index
-          ? { ...item, isOpen: !item.isOpen, isClose: !item.isClose }
-          : item
-      )
-    );
+    setMenuItemModal((prev) => {
+      return {
+        ...prev,
+        isOpen: !prev.isOpen,
+        isClose: !prev.isClose,
+      };
+    });
   };
 
   const modalStyle = {
@@ -99,25 +88,22 @@ const MenuButton = () => {
           );
         })}
       </Menu>
-      {menuItemModal.map((item) => {
-        return (
-          <Modal
-            open={!!item.isOpen}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={modalStyle}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Text in a modal
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
-            </Box>
-          </Modal>
-        );
-      })}
+
+      <Modal
+        open={!!menuItemModal.isOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   );
 };
