@@ -23,15 +23,25 @@ const MenuButton = () => {
 
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  const handleModal = (index: number) => {
+  const handleModalClick = () => {
+    setMenuItemModal((prev) => {
+      return {
+        ...prev,
+        isOpen: !prev.isOpen,
+        isClose: !prev.isClose,
+      };
+    });
+  };
+
+  const handleModalClose = () => {
     setMenuItemModal((prev) => {
       return {
         ...prev,
@@ -60,7 +70,7 @@ const MenuButton = () => {
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+        onClick={handleMenuClick}
       >
         <h4 className="w-6 h-6 bg-slate-400 rounded-lg"></h4>
       </Button>
@@ -68,7 +78,7 @@ const MenuButton = () => {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={handleMenuClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
@@ -80,18 +90,16 @@ const MenuButton = () => {
             <h4>MoreNames</h4>
           </div>
         </MenuItem>
-        {menuItemModal.map((item, index) => {
-          return (
-            <MenuItem key={index} onClick={handleClose}>
-              {item.name}
-            </MenuItem>
-          );
-        })}
+        <MenuItem>
+          <div className="flex gap-2">
+            <h4 onClick={handleModalClick}>create a timer</h4>
+          </div>
+        </MenuItem>
       </Menu>
 
       <Modal
         open={!!menuItemModal.isOpen}
-        onClose={handleClose}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
