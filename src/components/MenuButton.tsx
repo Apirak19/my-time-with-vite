@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, ChangeEvent, FormEvent } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { useContextA } from "../context/ContextA";
 
 export type MenuItem = {
   name: String;
@@ -14,6 +15,9 @@ export type MenuItem = {
 };
 
 const MenuButton = () => {
+  const { addTimer } = useContextA();
+  const [timerName, setTimerName] = useState<string | undefined>(undefined);
+  const [timerType, setTimerType] = useState<string | undefined>(undefined);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [menuItemModal, setMenuItemModal] = React.useState<MenuItem>({
     name: "create a timer1",
@@ -31,7 +35,15 @@ const MenuButton = () => {
     setAnchorEl(null);
   };
 
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (timerName && timerType) {
+      addTimer({ timerName: timerName, timerType: timerType });
+    }
+  };
+
   const handleModalClick = () => {
+    setAnchorEl(null);
     setMenuItemModal((prev) => {
       return {
         ...prev,
@@ -104,12 +116,28 @@ const MenuButton = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4 bg-slate-400 p-4 rounded-lg"
+          >
+            <input
+              type="text"
+              name="timerName"
+              placeholder="Timer Name"
+              value={timerName}
+              onChange={(e) => setTimerName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              name="timerType"
+              placeholder="Timer Type"
+              value={timerType}
+              onChange={(e) => setTimerType(e.target.value)}
+              required
+            />
+            <button type="submit">create a timer</button>
+          </form>
         </Box>
       </Modal>
     </div>
