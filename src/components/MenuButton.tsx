@@ -39,6 +39,15 @@ const MenuButton = () => {
     event.preventDefault();
     if (timerName && timerType) {
       addTimer({ timerName: timerName, timerType: timerType });
+      setTimerName("");
+      setTimerType("");
+      setMenuItemModal((prev) => {
+        return {
+          ...prev,
+          isOpen: !prev.isOpen,
+          isClose: !prev.isClose,
+        };
+      });
     }
   };
 
@@ -61,6 +70,8 @@ const MenuButton = () => {
         isClose: !prev.isClose,
       };
     });
+    setTimerName("");
+    setTimerType("");
   };
 
   const modalStyle = {
@@ -102,9 +113,9 @@ const MenuButton = () => {
             <h4>MoreNames</h4>
           </div>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleModalClick}>
           <div className="flex gap-2">
-            <h4 onClick={handleModalClick}>create a timer</h4>
+            <h4>create a timer</h4>
           </div>
         </MenuItem>
       </Menu>

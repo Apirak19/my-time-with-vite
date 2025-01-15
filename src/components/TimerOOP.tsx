@@ -4,6 +4,7 @@ interface TimerState {
   hours: number;
   minutes: number;
   seconds: number;
+  milliseconds: number;
   isPaused: boolean;
 }
 
@@ -17,42 +18,69 @@ export interface TimerProps {
 class TimerOOP extends Component<TimerProps, TimerState> {
   private interval: NodeJS.Timeout | null = null;
 
-  
-
   constructor(props: TimerProps) {
     super(props);
     this.state = {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      isPaused: false,
+      milliseconds: 0,
+      isPaused: true,
     };
   }
 
-  componentDidMount(): void {
-    this.startTimer();
-  }
+  // componentDidMount(): void {
+  //   this.startTimer();
+  // }
+
+  // startTimer = (): void => {
+  //   if (this.interval) return; // Prevent multiple intervals
+  //   this.setState({ isPaused: false });
+  //   this.interval = setInterval(() => {
+  //     this.setState((prevState) => {
+  //       if (prevState.isPaused === true) return prevState; // Skip update if paused
+
+  //       let { hours, minutes, seconds, milliseconds } = prevState;
+  //       milliseconds++;
+  //       if (milliseconds === 1000) {
+  //         milliseconds = 0;
+  //         seconds++;
+  //       }
+  //       if (seconds === 60) {
+  //         seconds = 0;
+  //         minutes++;
+  //         if (minutes === 60) {
+  //           minutes = 0;
+  //           hours++;
+  //         }
+  //       }
+
+  //       return { ...prevState, hours, minutes, seconds, milliseconds }; // Spread prevState to keep isPaused intact
+  //     });
+  //   }, 1);
+  // };
 
   startTimer = (): void => {
-    if (this.interval) return; // Prevent multiple intervals
+    if (this.interval) return;
+  
+    const startTime = Date.now(); // Record the start time
+    this.setState({ isPaused: false });
+  
     this.interval = setInterval(() => {
+      if (this.state.isPaused) return;
+  
       this.setState((prevState) => {
-        if (prevState.isPaused === true) return prevState; // Skip update if paused
-
-        let { hours, minutes, seconds } = prevState;
-        seconds++;
-        if (seconds === 60) {
-          seconds = 0;
-          minutes++;
-          if (minutes === 60) {
-            minutes = 0;
-            hours++;
-          }
-        }
-
-        return { ...prevState, hours, minutes, seconds }; // Spread prevState to keep isPaused intact
+        const currentTime = Date.now();
+        const elapsed = currentTime - startTime;
+        
+        const hours = Math.floor(elapsed / (1000 * 60 * 60));
+        const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        const milliseconds = elapsed % 1000;
+  
+        return { ...prevState, hours, minutes, seconds, milliseconds };
       });
-    }, 1000);
+    }, 50); // Adjust the interval to a manageable precision, e.g., 50ms
   };
 
   pauseTimer = (): void => {
@@ -60,13 +88,17 @@ class TimerOOP extends Component<TimerProps, TimerState> {
   };
 
   unpauseTimer = (): void => {
-    this.setState({ isPaused: false });
+    if (!this.interval) {
+      this.startTimer();
+    } else {
+      this.setState({ isPaused: false });
+    }
   };
 
   resetTimer = (): void => {
     this.pauseTimer();
-    this.setState({ hours: 0, minutes: 0, seconds: 0 });
-    this.startTimer();
+    this.setState({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    // this.startTimer();
   };
 
   increaseHours = (): void => {
@@ -117,9 +149,21 @@ class TimerOOP extends Component<TimerProps, TimerState> {
             className="bg-blue-400"
             onClick={this.state.isPaused ? this.unpauseTimer : this.pauseTimer}
           >
-            {this.state.isPaused ? "Continue" : "Pause"}
+            {this.state.isPaused
+              ? this.state.milliseconds !== 0
+                ? "continue"
+                : "start"
+              : "Pause"}
           </button>
-          <button className="bg-red-500" onClick={this.resetTimer}>
+          <button
+            className={`${
+              this.state.seconds === 0 && this.state.milliseconds === 0
+                ? "bg-slate-800"
+                : "bg-red-500"
+            }`}
+            onClick={this.resetTimer}
+            disabled={this.state.milliseconds === 0}
+          >
             Reset
           </button>
         </div>
