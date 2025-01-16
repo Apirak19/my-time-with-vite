@@ -6,6 +6,8 @@ interface TimerState {
   seconds: number;
   milliseconds: number;
   isPaused: boolean;
+  elapsedBeforePause?: number;
+  startTime: number;
 }
 
 export interface TimerProps {
@@ -25,80 +27,68 @@ class TimerOOP extends Component<TimerProps, TimerState> {
       minutes: 0,
       seconds: 0,
       milliseconds: 0,
+      elapsedBeforePause: 0,
+      startTime: 0,
       isPaused: true,
     };
   }
 
-  // componentDidMount(): void {
-  //   this.startTimer();
-  // }
-
-  // startTimer = (): void => {
-  //   if (this.interval) return; // Prevent multiple intervals
-  //   this.setState({ isPaused: false });
-  //   this.interval = setInterval(() => {
-  //     this.setState((prevState) => {
-  //       if (prevState.isPaused === true) return prevState; // Skip update if paused
-
-  //       let { hours, minutes, seconds, milliseconds } = prevState;
-  //       milliseconds++;
-  //       if (milliseconds === 1000) {
-  //         milliseconds = 0;
-  //         seconds++;
-  //       }
-  //       if (seconds === 60) {
-  //         seconds = 0;
-  //         minutes++;
-  //         if (minutes === 60) {
-  //           minutes = 0;
-  //           hours++;
-  //         }
-  //       }
-
-  //       return { ...prevState, hours, minutes, seconds, milliseconds }; // Spread prevState to keep isPaused intact
-  //     });
-  //   }, 1);
-  // };
-
   startTimer = (): void => {
     if (this.interval) return;
-  
-    const startTime = Date.now(); // Record the start time
+
+    const timeStart = Date.now() - (this.state.elapsedBeforePause || 0);
+    this.setState({
+      startTime: timeStart,
+    });
     this.setState({ isPaused: false });
-  
+
     this.interval = setInterval(() => {
       if (this.state.isPaused) return;
-  
+
       this.setState((prevState) => {
         const currentTime = Date.now();
-        const elapsed = currentTime - startTime;
-        
+        const elapsed = currentTime - this.state.startTime;
+
         const hours = Math.floor(elapsed / (1000 * 60 * 60));
         const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
         const milliseconds = elapsed % 1000;
-  
+
         return { ...prevState, hours, minutes, seconds, milliseconds };
       });
     }, 50); // Adjust the interval to a manageable precision, e.g., 50ms
   };
 
   pauseTimer = (): void => {
-    this.setState({ isPaused: true });
+    if (this.interval) {
+      clearInterval(this.interval); // Clear the interval
+      this.interval = null;
+
+      const elapsed = Date.now() - (this.state.startTime || Date.now()); // Calculate elapsed time
+      this.setState({ isPaused: true, elapsedBeforePause: elapsed });
+    }
   };
 
   unpauseTimer = (): void => {
-    if (!this.interval) {
+    if (this.state.isPaused) {
       this.startTimer();
-    } else {
-      this.setState({ isPaused: false });
     }
   };
 
   resetTimer = (): void => {
-    this.pauseTimer();
-    this.setState({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
-    // this.startTimer();
+    if (this.interval) {
+      clearInterval(this.interval); // Clear the interval
+      this.interval = null; // Remove the interval reference
+    }
+
+    this.setState({
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+      isPaused: true, // Set to paused state
+      elapsedBeforePause: 0, // Reset elapsed time
+    });
   };
 
   increaseHours = (): void => {
