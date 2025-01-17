@@ -138,15 +138,28 @@ const MenuButton = () => {
               value={timerName}
               onChange={(e) => setTimerName(e.target.value)}
               required
+              className="px-2"
             />
-            <input
+            {/* <input
               type="text"
               name="timerType"
               placeholder="Timer Type"
               value={timerType}
               onChange={(e) => setTimerType(e.target.value)}
               required
-            />
+              className="px-2"
+            /> */}
+            <select
+              name="timerType"
+              id="timerType"
+              onChange={(e) => setTimerType(e.target.value)}
+            >
+              <option value="" disabled selected>
+                Select a timer type
+              </option>
+              <option value="work">Work</option>
+              <option value="fun">Fun</option>
+            </select>
             <button type="submit">create a timer</button>
           </form>
         </Box>
