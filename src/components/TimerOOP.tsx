@@ -134,9 +134,9 @@ class TimerOOP extends Component<TimerProps, TimerState> {
           </h1>
         </div>
         {/* Buttons */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-full">
           <button
-            className="bg-blue-400"
+            className="bg-blue-400 w-full"
             onClick={this.state.isPaused ? this.unpauseTimer : this.pauseTimer}
           >
             {this.state.isPaused
@@ -150,7 +150,7 @@ class TimerOOP extends Component<TimerProps, TimerState> {
               this.state.seconds === 0 && this.state.milliseconds === 0
                 ? "bg-slate-800"
                 : "bg-red-500"
-            }`}
+            } w-full py-2`}
             onClick={this.resetTimer}
             disabled={this.state.milliseconds === 0}
           >
