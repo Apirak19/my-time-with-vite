@@ -10,7 +10,7 @@ function App() {
   return (
     <main>
       <TopMenu />
-      <div className="flex flex-col place-items-center">
+      <div className="flex flex-col place-items-center py-8 gap-8">
         {items.map((item, index) => (
           <TimerOOP
             key={index}
