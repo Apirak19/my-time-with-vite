@@ -16,6 +16,11 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+app.get("/lol", (req, res) => {
+  console.log("lol");
+  return res.status(200).json({ message: "5555555 lol" });
+});
+
 const port = 3000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
