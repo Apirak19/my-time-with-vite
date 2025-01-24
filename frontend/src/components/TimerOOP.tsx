@@ -141,8 +141,8 @@ class TimerOOP extends Component<TimerProps, TimerState> {
           >
             {this.state.isPaused
               ? this.state.milliseconds !== 0
-                ? "continue"
-                : "start"
+                ? "Continue"
+                : "Start"
               : "Pause"}
           </button>
           <button
