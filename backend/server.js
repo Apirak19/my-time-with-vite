@@ -19,24 +19,42 @@ mongoose
     process.exit(1); // Exit the app if unable to connect
   });
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-
-// getUser
+// Schemas
 const userSchema = new mongoose.Schema({
   first_name: String,
   last_name: String,
   username: String,
   password: String,
 });
+const userModel = mongoose.model("User", userSchema);
 
-const user = mongoose.model("User", userSchema);
+const timersSchema = new mongoose.Schema({
+  ownerId: String,
+  timerName: String,
+  timerType: String,
+});
+const timerModel = mongoose.model("Timer", timersSchema);
 
-app.get("/getUser", (req, res) => {
+// Routes
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
+
+// getUser
+
+app.get("/getUser", async (req, res) => {
+  const users = await userModel.find();
   try {
-    res.send("API is running");
+    res.status(200).json({ user: users });
+  } catch {
+    console.error("error occured");
+  }
+});
+
+app.get("/getTimer", async (req, res) => {
+  const timers = await timerModel.find();
+  try {
+    res.status(200).json({ timer: timers });
   } catch {
     console.error("error occured");
   }
