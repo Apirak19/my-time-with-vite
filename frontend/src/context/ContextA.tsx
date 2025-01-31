@@ -19,6 +19,7 @@ const ContextAProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       timerName: timer.timerName,
       timerType: timer.timerType,
     };
+
     setItems((prev) => [...prev, newTimer]);
     setNextId((prevId) => prevId + 1);
   };
