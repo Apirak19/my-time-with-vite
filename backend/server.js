@@ -52,9 +52,16 @@ app.get("/getUser", async (req, res) => {
 });
 
 app.get("/getTimer", async (req, res) => {
-  const timers = await timerModel.find();
   try {
-    res.status(200).json({ timer: timers });
+    const result = await timerModel.aggregate([
+      {
+        $group: {
+          _id: "$timerType",
+          totalDuration: { $sum: "$durationHours" },
+        },
+      },
+    ]);
+    res.status(200).json({ result: result });
   } catch {
     console.error("error occured");
   }
