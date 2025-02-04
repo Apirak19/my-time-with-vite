@@ -10,6 +10,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
+  const [timeTypeCard, setTimeTypeCard] = useState()
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function HomePage() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        // setTimers(data.result);
+        setTimers(data.result);
         // API returns { result: [...] }, so extract `result`
         console.log("data: ", data.result);
       } catch (err) {
