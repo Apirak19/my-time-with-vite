@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TimerProps } from "../components/TimerOOP";
+import { TimerProps } from "../types/TimerTypes";
 
 const useTimerState = () => {
   const [items, setItems] = useState<TimerProps[]>([]);

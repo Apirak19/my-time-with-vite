@@ -15,3 +15,8 @@ export interface TimerState {
    prevTime?: number;
  }
  
+ export interface TimerArray {
+  items: TimerProps[];
+  addTimer: (timer: { timerName: string; timerType: string }) => void;
+  removeTimer: (id: number) => void;
+}

@@ -1,12 +1,6 @@
 import React, { createContext, useContext, ReactNode } from "react";
-import { TimerProps } from "../components/TimerOOP";
+import { TimerArray } from "../types/TimerTypes";
 import useTimerState from "../hooks/useTimerState";
-
-interface TimerArray {
-  items: TimerProps[];
-  addTimer: (timer: { timerName: string; timerType: string }) => void;
-  removeTimer: (id: number) => void;
-}
 
 const ContextA = createContext<TimerArray | undefined>(undefined);
 
