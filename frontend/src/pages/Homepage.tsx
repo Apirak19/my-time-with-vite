@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useContextA } from "../context/ContextA";
 import TimerOOP from "../components/TimerOOP";
 import { TimerProps } from "../types/TimerTypes";
+import { DashboardTotalTimeCardType } from "../types/DashboardTotalTimeCardType";
+import DashboardTotalTimeCard from "../classes/DashboardTotalTimeCard";
+// import {Das}
 import { duration } from "@mui/material";
 
 export default function HomePage() {
@@ -10,7 +13,8 @@ export default function HomePage() {
   const navigate = useNavigate();
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
-  const [timeTypeCard, setTimeTypeCard] = useState();
+  const [dashboardTotalTimeCard, setDashboardTotalTimeCard] =
+    useState<DashboardTotalTimeCardType[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -21,7 +25,7 @@ export default function HomePage() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setTimers(data.result);
+        setDashboardTotalTimeCard(data.result);
         // API returns { result: [...] }, so extract `result`
         console.log("data: ", data.result);
       } catch (err) {
@@ -37,6 +41,9 @@ export default function HomePage() {
     <main className="flex flex-col items-center h-screen gap-4">
       <h2 className="text-2xl">What have you done?</h2>
       <div className="flex gap-4">
+        {dashboardTotalTimeCard.map((item: DashboardTotalTimeCardType) => {
+          return 
+        })}
         <article className="bg-slate-600 rounded-md px-4 py-3">
           <div className="flex gap-8 items-center">
             <div className="flex flex-col ">

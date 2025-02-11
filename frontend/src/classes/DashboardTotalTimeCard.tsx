@@ -6,7 +6,7 @@ interface WorkStatsProps {
   percentage: number;
 }
 
-class DashboardHourStatCard extends React.Component<WorkStatsProps> {
+class DashboardTotalTimeCard extends React.Component<WorkStatsProps> {
   render() {
     const { timerType, hours, percentage } = this.props;
     return (
@@ -27,4 +27,4 @@ class DashboardHourStatCard extends React.Component<WorkStatsProps> {
   }
 }
 
-export default DashboardHourStatCard;
+export default DashboardTotalTimeCard;
