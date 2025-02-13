@@ -50,7 +50,7 @@ export default function HomePage() {
             totalDuration={item.totalDuration}
           />
         ))}
-        <article className="bg-slate-600 rounded-md px-4 py-3">
+        {/* <article className="bg-slate-600 rounded-md px-4 py-3">
           <div className="flex gap-8 items-center">
             <div className="flex flex-col ">
               <h4 className="text-start text-slate-300">Working</h4>
@@ -77,7 +77,7 @@ export default function HomePage() {
               50%
             </div>
           </div>
-        </article>
+        </article> */}
       </div>
 
       <div className="flex flex-col place-items-center py-8 gap-8">
