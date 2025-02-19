@@ -48,6 +48,7 @@ export default function HomePage() {
             key={index}
             cardName={item.cardName}
             totalDuration={item.totalDuration}
+            percentage={20}
           />
         ))}
         {/* <article className="bg-slate-600 rounded-md px-4 py-3">
