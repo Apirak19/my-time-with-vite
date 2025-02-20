@@ -16,12 +16,41 @@ export default function HomePage() {
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
-    WorkStatsProps[]
+  { cardName: string; percentage: number; duration: number }[]
+  >([]);
+  const [percentages, setPercentages] = useState<
+    { cardName: string; percentage: number; duration: number }[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchTimers = async () => {
+    if (dashboardTotalTimeCard.length > 0) {
+      // Convert totalDuration values to numbers
+      const totalDurations = dashboardTotalTimeCard.map((item) =>
+        parseFloat(item.totalDuration.$numberDecimal)
+      );
+
+      // Calculate the total sum
+      const totalSum = totalDurations.reduce(
+        (sum, duration) => sum + duration,
+        0
+      );
+
+      // Calculate percentages
+      const calculatedPercentages = dashboardTotalTimeCard.map((item) => ({
+        cardName: item.cardName,
+        duration: parseFloat(item.totalDuration.$numberDecimal),
+        percentage:
+          (parseFloat(item.totalDuration.$numberDecimal) / totalSum) * 100,
+      }));
+
+      setPercentages(calculatedPercentages);
+    }
+  }, [dashboardTotalTimeCard]); // Runs when `dashboardTotalTimeCard` updates
+
+  useEffect(() => {
+    const fetchStat = async () => {
       try {
         fetch("http://localhost:3000/getTimer")
           .then((response) => response.json())
@@ -37,17 +66,17 @@ export default function HomePage() {
       }
     };
 
-    fetchTimers();
+    fetchStat();
   }, []);
   return (
     <main className="flex flex-col items-center h-screen gap-4">
       <h2 className="text-2xl">What have you done?</h2>
       <div className="flex gap-4">
-        {dashboardTotalTimeCard.map((item, index) => (
+        {percentages.map((item, index) => (
           <DashboardTotalTimeCard
             key={index}
             cardName={item.cardName}
-            totalDuration={item.totalDuration}
+            totalDuration={item.duration}
             percentage={20}
           />
         ))}

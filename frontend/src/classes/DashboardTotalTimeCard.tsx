@@ -2,9 +2,7 @@ import React from "react";
 
 export interface WorkStatsProps {
   cardName: string;
-  totalDuration: {
-    $numberDecimal: string;
-  };
+  totalDuration: number;
   percentage?: number;
 }
 
@@ -17,8 +15,7 @@ class DashboardTotalTimeCard extends React.Component<WorkStatsProps> {
           <div className="flex flex-col">
             <h4 className="text-start text-slate-300">{cardName}</h4>
             <h3 className="font-semibold text-2xl text-start">
-              {totalDuration.$numberDecimal}{" "}
-              <span className="font-normal text-lg">hours</span>
+              {totalDuration} <span className="font-normal text-lg">hours</span>
             </h3>
           </div>
           <div className="text-lg w-12 h-12 p-6 border-4 flex items-center justify-center rounded-full">
