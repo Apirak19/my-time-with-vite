@@ -40,9 +40,9 @@ export default function HomePage() {
       // Calculate percentages
       const calculatedPercentages = dashboardTotalTimeCard.map((item) => ({
         cardName: item.cardName,
-        duration: parseFloat(item.totalDuration.$numberDecimal),
+        duration: parseFloat(item.duration),
         percentage:
-          (parseFloat(item.totalDuration.$numberDecimal) / totalSum) * 100,
+          (parseFloat(item.duration) / totalSum) * 100,
       }));
 
       setPercentages(calculatedPercentages);
