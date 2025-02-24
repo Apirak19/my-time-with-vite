@@ -16,7 +16,7 @@ export default function HomePage() {
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
-  { cardName: string; percentage: number; duration: number }[]
+    { cardName: string; percentage: number; duration: number }[]
   >([]);
   const [percentages, setPercentages] = useState<
     { cardName: string; percentage: number; duration: number }[]
@@ -27,9 +27,10 @@ export default function HomePage() {
   useEffect(() => {
     if (dashboardTotalTimeCard.length > 0) {
       // Convert totalDuration values to numbers
-      const totalDurations = dashboardTotalTimeCard.map((item) =>
-        parseFloat(item.totalDuration.$numberDecimal)
+      const totalDurations = dashboardTotalTimeCard.map(
+        (item) => item.duration
       );
+      console.log(totalDurations);
 
       // Calculate the total sum
       const totalSum = totalDurations.reduce(
@@ -40,9 +41,8 @@ export default function HomePage() {
       // Calculate percentages
       const calculatedPercentages = dashboardTotalTimeCard.map((item) => ({
         cardName: item.cardName,
-        duration: parseFloat(item.duration),
-        percentage:
-          (parseFloat(item.duration) / totalSum) * 100,
+        duration: item.duration,
+        percentage: (item.duration / totalSum) * 100,
       }));
 
       setPercentages(calculatedPercentages);
