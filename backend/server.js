@@ -60,6 +60,13 @@ app.get("/getTimer", async (req, res) => {
           totalDuration: { $sum: "$durationHours" },
         },
       },
+      {
+        $project: {
+          _id: 0,
+          timerType: "$_id", // Renaming _id to timerType
+          totalDuration: 1, // Keeping totalDuration as a number
+        },
+      },
     ]);
     res.status(200).json({ result: result });
   } catch {

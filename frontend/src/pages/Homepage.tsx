@@ -27,10 +27,10 @@ export default function HomePage() {
   useEffect(() => {
     if (dashboardTotalTimeCard.length > 0) {
       // Convert totalDuration values to numbers
-      const totalDurations = dashboardTotalTimeCard.map(
-        (item) => item.duration
-      );
-      console.log(totalDurations);
+      const totalDurations = dashboardTotalTimeCard.map((item) => ({
+        timerType: item.cardName,
+      }));
+      console.log("total: ", totalDurations);
 
       // Calculate the total sum
       const totalSum = totalDurations.reduce(
@@ -55,8 +55,13 @@ export default function HomePage() {
         fetch("http://localhost:3000/getTimer")
           .then((response) => response.json())
           .then((data) => {
-            console.log("Fetched Data:", data.result);
-            setDashboardTotalTimeCard(data.result);
+            const formattedResult = data.result.map((item: any) => ({
+              timerType: item.timerType,
+              totalDuration: Number(item.totalDuration.$numberDecimal),
+              // .toNumber(), // Convert Decimal128 to number
+            }));
+            console.log("Fetched Data:", formattedResult);
+            setDashboardTotalTimeCard(formattedResult);
           })
           .catch((error) => console.error("error: ", error));
       } catch (err) {
