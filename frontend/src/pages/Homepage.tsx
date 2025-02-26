@@ -28,13 +28,14 @@ export default function HomePage() {
     if (dashboardTotalTimeCard.length > 0) {
       // Convert totalDuration values to numbers
       const totalDurations = dashboardTotalTimeCard.map((item) => ({
-        timerType: item.cardName,
+        // timerType: item.cardName,
+        duration: item.duration
       }));
       console.log("total: ", totalDurations);
 
       // Calculate the total sum
       const totalSum = totalDurations.reduce(
-        (sum, duration) => sum + duration,
+        (sum, duration) => sum += items.duration,
         0
       );
 
