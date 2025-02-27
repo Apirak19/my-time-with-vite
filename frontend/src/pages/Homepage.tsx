@@ -7,8 +7,6 @@ import { DashboardTotalTimeCardType } from "../types/DashboardTotalTimeCardType"
 import DashboardTotalTimeCard, {
   WorkStatsProps,
 } from "../classes/DashboardTotalTimeCard";
-// import {Das}
-import { duration } from "@mui/material";
 
 export default function HomePage() {
   const { items } = useContextA();
@@ -16,39 +14,10 @@ export default function HomePage() {
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
-    { cardName: string; percentage: number; duration: number }[]
-  >([]);
-  const [percentages, setPercentages] = useState<
-    { cardName: string; percentage: number; duration: number }[]
+    DashboardTotalTimeCardType[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (dashboardTotalTimeCard.length > 0) {
-      // Convert totalDuration values to numbers
-      const totalDurations = dashboardTotalTimeCard.map((item) => ({
-        // timerType: item.cardName,
-        duration: item.duration
-      }));
-      console.log("total: ", totalDurations);
-
-      // Calculate the total sum
-      const totalSum = totalDurations.reduce(
-        (sum, duration) => sum += items.duration,
-        0
-      );
-
-      // Calculate percentages
-      const calculatedPercentages = dashboardTotalTimeCard.map((item) => ({
-        cardName: item.cardName,
-        duration: item.duration,
-        percentage: (item.duration / totalSum) * 100,
-      }));
-
-      setPercentages(calculatedPercentages);
-    }
-  }, [dashboardTotalTimeCard]); // Runs when `dashboardTotalTimeCard` updates
 
   useEffect(() => {
     const fetchStat = async () => {
@@ -56,10 +25,16 @@ export default function HomePage() {
         fetch("http://localhost:3000/getTimer")
           .then((response) => response.json())
           .then((data) => {
+            const totalTime = data.result.reduce((prev: any, cur: any) => {
+              return prev + Number(cur.totalDuration.$numberDecimal);
+            }, 0);
+
             const formattedResult = data.result.map((item: any) => ({
-              timerType: item.timerType,
-              totalDuration: Number(item.totalDuration.$numberDecimal),
-              // .toNumber(), // Convert Decimal128 to number
+              cardName: item.timerType,
+              duration: Number(item.totalDuration.$numberDecimal),
+              percentage: Math.round(
+                (Number(item.totalDuration.$numberDecimal) / totalTime) * 100
+              ),
             }));
             console.log("Fetched Data:", formattedResult);
             setDashboardTotalTimeCard(formattedResult);
@@ -74,16 +49,17 @@ export default function HomePage() {
 
     fetchStat();
   }, []);
+
   return (
     <main className="flex flex-col items-center h-screen gap-4">
       <h2 className="text-2xl">What have you done?</h2>
       <div className="flex gap-4">
-        {percentages.map((item, index) => (
+        {dashboardTotalTimeCard.map((item, index) => (
           <DashboardTotalTimeCard
             key={index}
             cardName={item.cardName}
             totalDuration={item.duration}
-            percentage={20}
+            percentage={item.percentage}
           />
         ))}
         {/* <article className="bg-slate-600 rounded-md px-4 py-3">

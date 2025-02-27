@@ -1,4 +1,5 @@
 export interface DashboardTotalTimeCardType {
   cardName: string;
-  duration: string;
+  duration: number;
+  percentage: number;
 }
