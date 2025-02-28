@@ -22,14 +22,23 @@ export default function HomePage() {
   useEffect(() => {
     const fetchStat = async () => {
       try {
-        fetch("http://localhost:3000/getTimer")
+        fetch("http://localhost:3000/getStat")
           .then((response) => response.json())
           .then((data) => {
-            const totalTime = data.result.reduce((prev: any, cur: any) => {
-              return prev + Number(cur.totalDuration.$numberDecimal);
-            }, 0);
+            const mostTimeSpendings = data.mostSpend.map((item: any) => ({
+              name: item.timerName,
+              durationHours: item.durationHours
+            }));
+            console.log(mostTimeSpendings);
 
-            const formattedResult = data.result.map((item: any) => ({
+            const totalTime = data.totalByTimerType.reduce(
+              (prev: any, cur: any) => {
+                return prev + Number(cur.totalDuration.$numberDecimal);
+              },
+              0
+            );
+
+            const formattedResult = data.totalByTimerType.map((item: any) => ({
               cardName: item.timerType,
               duration: Number(item.totalDuration.$numberDecimal),
               percentage: Math.round(
@@ -66,6 +75,15 @@ export default function HomePage() {
       </div>
       {/* mostTimeSpend */}
       <h2 className="text-2xl">What you spend doing the most?</h2>
+      <div className="flex flex-col gap-4 overflow-y-auto whitespace-nowrap max-h-[200px] p-2">
+        <p>some text</p>
+        <p>some text</p>
+        <p>some text</p>
+        <p>some text</p>
+        <p>some text</p>
+        <p>some text</p>
+        <p>some text</p>
+      </div>
 
       <div className="flex flex-col place-items-center py-8 gap-8">
         {items.map((item, index) => (

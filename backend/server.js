@@ -32,6 +32,7 @@ const timersSchema = new mongoose.Schema({
   ownerId: String,
   timerName: String,
   timerType: String,
+  durationHours: Number,
 });
 const timerModel = mongoose.model("Timer", timersSchema);
 
@@ -51,9 +52,9 @@ app.get("/getUser", async (req, res) => {
   }
 });
 
-app.get("/getTimer", async (req, res) => {
+app.get("/getStat", async (req, res) => {
   try {
-    const result = await timerModel.aggregate([
+    const totalByTimerType = await timerModel.aggregate([
       {
         $group: {
           _id: "$timerType",
@@ -68,7 +69,11 @@ app.get("/getTimer", async (req, res) => {
         },
       },
     ]);
-    res.status(200).json({ result: result });
+    const mostSpend = await timerModel.find().sort({ durationHours: -1 });
+    res.status(200).json({
+      totalByTimerType: totalByTimerType,
+      mostSpend: mostSpend,
+    });
   } catch {
     console.error("error occured");
   }
