@@ -73,8 +73,6 @@ app.get("/getStat", async (req, res) => {
     res.status(200).json({
       totalByTimerType: totalByTimerType,
       mostSpend: mostSpend,
-      mostSpend: mostSpend,
-      mostSpend: mostSpend,
     });
   } catch {
     console.error("error occured");
