@@ -10,8 +10,6 @@ export default function Layout() {
       </main>
       <footer className="w-full p-4 text-center text-sm">
         © 2025 My Time with Vite. All rights reserved.
-        © 2025 My Time with Vite. All rights reserved.
-        © 2025 My Time with Vite. All rights reserved.
       </footer>
     </div>
   );
