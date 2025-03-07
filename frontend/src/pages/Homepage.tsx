@@ -27,7 +27,7 @@ export default function HomePage() {
           .then((data) => {
             const mostTimeSpendings = data.mostSpend.map((item: any) => ({
               name: item.timerName,
-              durationHours: item.durationHours
+              durationHours: item.durationHours,
             }));
             console.log(mostTimeSpendings);
 
@@ -75,7 +75,7 @@ export default function HomePage() {
       </div>
       {/* mostTimeSpend */}
       <h2 className="text-2xl">What you spend doing the most?</h2>
-      <div className="flex flex-col gap-4 overflow-y-auto whitespace-nowrap max-h-[200px] p-2">
+      <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[200px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         <p>some text</p>
         <p>some text</p>
         <p>some text</p>
