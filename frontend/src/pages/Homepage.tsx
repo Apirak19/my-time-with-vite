@@ -75,14 +75,32 @@ export default function HomePage() {
       </div>
       {/* mostTimeSpend */}
       <h2 className="text-2xl">What you spend doing the most?</h2>
-      <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[200px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-        <p>some text</p>
-        <p>some text</p>
-        <p>some text</p>
-        <p>some text</p>
-        <p>some text</p>
-        <p>some text</p>
-        <p>some text</p>
+      <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[200px] w-full max-w-[500px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        <div className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3">
+          <p className="text-xl">Afternoon gaming</p>
+          <p className="text-3xl">8</p>
+          <p className="text-3xl">hours</p>
+        </div>
+        <div className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3">
+          <p className="text-xl">Afternoon gaming</p>
+          <p className="text-3xl">8</p>
+          <p className="text-3xl">hours</p>
+        </div>
+        <div className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3">
+          <p className="text-xl">Afternoon gaming</p>
+          <p className="text-3xl">8</p>
+          <p className="text-3xl">hours</p>
+        </div>
+        <div className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3">
+          <p className="text-xl">Afternoon gaming</p>
+          <p className="text-3xl">8</p>
+          <p className="text-3xl">hours</p>
+        </div>
+        <div className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3">
+          <p className="text-xl">Afternoon gaming</p>
+          <p className="text-3xl">8</p>
+          <p className="text-3xl">hours</p>
+        </div>
       </div>
 
       <div className="flex flex-col place-items-center py-8 gap-8">
