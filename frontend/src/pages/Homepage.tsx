@@ -8,12 +8,17 @@ import DashboardTotalTimeCard, {
   WorkStatsProps,
 } from "../classes/DashboardTotalTimeCard";
 
+interface MostTimeSpentTask {
+  name: string;
+  durationHours: number;
+}
+
 export default function HomePage() {
   const { items } = useContextA();
   const navigate = useNavigate();
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
-  const [mostTimeSpendingTasks, setMostTimeSpendingTasks] = useState<[]>([]);
+  const [mostTimeSpentTasks, setMostTimeSpentTasks] = useState<MostTimeSpentTask[]>([]);
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
     DashboardTotalTimeCardType[]
   >([]);
@@ -26,11 +31,13 @@ export default function HomePage() {
         fetch("http://localhost:3000/getStat")
           .then((response) => response.json())
           .then((data) => {
-            const mostTimeSpendings = data.mostSpend.map((item: any) => ({
+            const mostTimeSpentTasks = data.mostSpend.map((item: any) => ({
               name: item.timerName,
               durationHours: item.durationHours,
             }));
-            console.log(mostTimeSpendings);
+            setMostTimeSpentTasks(mostTimeSpentTasks);
+
+            console.log(mostTimeSpentTasks);
 
             const totalTime = data.totalByTimerType.reduce(
               (prev: any, cur: any) => {
@@ -80,23 +87,23 @@ export default function HomePage() {
               />
             ))}
           </div>
-  
+
           {/* mostTimeSpend */}
           <h2 className="text-2xl">What you spend doing the most?</h2>
           <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[200px] w-full max-w-[500px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             {/* Map over mostTimeSpendings */}
-            {mostTimeSpendingTasks.map((timer, index) => (
+            {mostTimeSpentTasks.map((timer, index) => (
               <div
                 key={index}
                 className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3"
               >
-                <p className="text-xl">{timer.timerName}</p>
+                <p className="text-xl">{timer.name}</p>
                 <p className="text-3xl">{timer.durationHours}</p>
                 <p className="text-3xl">hours</p>
               </div>
             ))}
           </div>
-  
+
           <div className="flex flex-col place-items-center py-8 gap-8">
             {items.map((item, index) => (
               <TimerOOP
