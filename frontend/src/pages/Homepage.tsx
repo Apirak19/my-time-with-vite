@@ -90,7 +90,7 @@ export default function HomePage() {
 
           {/* mostTimeSpend */}
           <h2 className="text-2xl">What you spend doing the most?</h2>
-          <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[200px] w-full max-w-[500px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[400px] w-full max-w-[500px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             {/* Map over mostTimeSpendings */}
             {mostTimeSpentTasks.map((timer, index) => (
               <div
