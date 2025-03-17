@@ -100,6 +100,7 @@ export default function HomePage() {
                 <p className="text-xl">{timer.name}</p>
                 <p className="text-3xl">{timer.durationHours}</p>
                 <p className="text-3xl">hours</p>
+                <p className="text-3xl">hours</p>
               </div>
             ))}
           </div>
