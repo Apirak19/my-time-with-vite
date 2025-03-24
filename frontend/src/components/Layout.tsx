@@ -3,7 +3,7 @@ import TopMenu from "./TopMenu";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="w-full min-h-screen flex flex-col items-center">
       <TopMenu />
       <main className="flex-1 flex justify-center items-center p-4">
         <Outlet />

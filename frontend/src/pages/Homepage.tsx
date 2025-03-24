@@ -11,6 +11,7 @@ import DashboardTotalTimeCard, {
 interface MostTimeSpentTask {
   name: string;
   durationHours: number;
+  created_at: string;
 }
 
 export default function HomePage() {
@@ -18,7 +19,9 @@ export default function HomePage() {
   const navigate = useNavigate();
   // fetched timers
   const [timers, setTimers] = useState<TimerProps[]>([]);
-  const [mostTimeSpentTasks, setMostTimeSpentTasks] = useState<MostTimeSpentTask[]>([]);
+  const [mostTimeSpentTasks, setMostTimeSpentTasks] = useState<
+    MostTimeSpentTask[]
+  >([]);
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
     DashboardTotalTimeCardType[]
   >([]);
@@ -31,10 +34,34 @@ export default function HomePage() {
         fetch("http://localhost:3000/getStat")
           .then((response) => response.json())
           .then((data) => {
-            const mostTimeSpentTasks = data.mostSpend.map((item: any) => ({
-              name: item.timerName,
-              durationHours: item.durationHours,
-            }));
+            console.log(data.mostSpend);
+
+            const mostTimeSpentTasks = data.mostSpend.map((item: any) => {
+              const utcDate = new Date(item.created_at);
+              const bangkokDate = new Date(
+                utcDate.getDate() + 7 * 60 * 60 * 1000
+              );
+              const options: Intl.DateTimeFormatOptions = {
+                // weekday: "long",
+                year: "numeric", // Full year (e.g., 2025)
+                month: "short", // Full month name (e.g., February)
+                day: "numeric", // Day of the month (e.g., 5)
+                hour: "2-digit", // Hour (e.g., 5)
+                minute: "2-digit", // Minute (e.g., 30)
+                second: "2-digit", // Second (e.g., 45)
+                timeZoneName: "short", // Timezone abbreviation (e.g., GMT+7)
+                timeZone: "Asia/Bangkok", // Set Bangkok as the timezone
+              };
+              const formattedBangkokDate = bangkokDate.toLocaleString(
+                "en-TH",
+                options
+              );
+              return {
+                name: item.timerName,
+                durationHours: item.durationHours,
+                created_at: formattedBangkokDate,
+              };
+            });
             setMostTimeSpentTasks(mostTimeSpentTasks);
 
             console.log(mostTimeSpentTasks);
@@ -97,10 +124,12 @@ export default function HomePage() {
                 key={index}
                 className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3"
               >
-                <p className="text-xl">{timer.name}</p>
-                <p className="text-3xl">{timer.durationHours}</p>
-                <p className="text-3xl">hours</p>
-                <p className="text-3xl">hours</p>
+                <div>
+                  <p className="text-xl">{timer.name}</p>
+                  <p className="text-3xl">{timer.durationHours}</p>
+                  <p className="text-3xl">hours</p>
+                </div>
+                <div>{timer.created_at}</div>
               </div>
             ))}
           </div>

@@ -56,6 +56,10 @@ app.get("/getStat", async (req, res) => {
   try {
     const totalByTimerType = await timerModel.aggregate([
       {
+        $match: { deleted_at: null },
+        // Filter out documents where deleted_at is not null
+      },
+      {
         $group: {
           _id: "$timerType",
           totalDuration: { $sum: "$durationHours" },
@@ -70,7 +74,10 @@ app.get("/getStat", async (req, res) => {
       },
     ]);
 
-    const mostSpend = await timerModel.find().sort({ durationHours: -1 });
+    const mostSpend = await timerModel
+      .find({ deleted_at: null })
+      .sort({ durationHours: -1 })
+      .limit(10);
 
     // Time spent per day, week, and month
     const timeSpentByPeriod = await timerModel.aggregate([
