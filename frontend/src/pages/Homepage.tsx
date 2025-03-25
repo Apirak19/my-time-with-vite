@@ -122,14 +122,18 @@ export default function HomePage() {
             {mostTimeSpentTasks.map((timer, index) => (
               <div
                 key={index}
-                className="flex gap-2 justify-center items-center bg-slate-600 rounded-md px-4 py-3"
+                className="w-full flex gap-2 justify-center items-center bg-slate-600 rounded-md"
               >
-                <div>
+                <div className="w-full flex flex-col gap-2 py-4 justify-center items-center bg-slate-600 rounded-md px-4 ">
                   <p className="text-xl">{timer.name}</p>
-                  <p className="text-3xl">{timer.durationHours}</p>
-                  <p className="text-3xl">hours</p>
+                  {timer.created_at}
                 </div>
-                <div>{timer.created_at}</div>
+                <div className="w-1/3 bg-white text-slate-800 h-full px-2 flex justify-center items-center">
+                  <p className="text-3xl font-bold">
+                    {timer.durationHours}
+                  </p>
+                  <p className="text-2xl">&nbsp;hr</p>
+                </div>
               </div>
             ))}
           </div>
