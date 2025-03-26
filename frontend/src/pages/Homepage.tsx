@@ -133,6 +133,7 @@ export default function HomePage() {
                     {timer.durationHours}
                   </p>
                   <p className="text-2xl">&nbsp;hr</p>
+                  <p className="text-2xl">&nbsp;hr</p>
                 </div>
               </div>
             ))}
