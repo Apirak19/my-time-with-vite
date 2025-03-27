@@ -95,7 +95,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center h-screen gap-4">
+    <main className="flex flex-col items-center gap-4">
       {loading ? (
         <div className="text-xl font-semibold mt-10">Loading...</div>
       ) : error ? (
@@ -116,23 +116,21 @@ export default function HomePage() {
           </div>
 
           {/* mostTimeSpend */}
-          <h2 className="text-2xl">What you spend doing the most?</h2>
+          <h2 className="text-2xl mt-10">What you spend doing the most?</h2>
           <div className="flex flex-col gap-4 overflow-y-scroll whitespace-nowrap max-h-[400px] w-full max-w-[500px] p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             {/* Map over mostTimeSpendings */}
             {mostTimeSpentTasks.map((timer, index) => (
               <div
                 key={index}
-                className="w-full flex gap-2 justify-center items-center bg-slate-600 rounded-md"
+                className="w-full flex py-0 gap-2 justify-center bg-slate-600 rounded-md"
               >
-                <div className="w-full flex flex-col gap-2 py-4 justify-center items-center bg-slate-600 rounded-md px-4 ">
+                <div className="w-3/4 flex flex-col gap-2 py-4 justify-center items-center bg-slate-600 rounded-md px-4 ">
                   <p className="text-xl">{timer.name}</p>
                   {timer.created_at}
                 </div>
-                <div className="w-1/3 bg-white text-slate-800 h-full px-2 flex justify-center items-center">
-                  <p className="text-3xl font-bold">
-                    {timer.durationHours}
-                  </p>
-                  <p className="text-2xl">&nbsp;hr</p>
+
+                <div className="w-1/4 flex bg-white text-slate-800 px-2 justify-center items-center">
+                  <p className="text-3xl font-bold">{timer.durationHours}</p>
                   <p className="text-2xl">&nbsp;hr</p>
                 </div>
               </div>

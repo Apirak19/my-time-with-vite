@@ -11,9 +11,6 @@ import Profile from "./pages/Profile";
 function App() {
   const { items } = useContextA();
 
-  // useEffect(async () => {
-  //   const timers = await fetch();
-  // }, []);
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
