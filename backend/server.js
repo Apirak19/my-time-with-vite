@@ -84,8 +84,6 @@ app.get("/getStat", async (req, res) => {
       {
         $group: {
           _id: {
-            day: { $dateToString: { format: "%Y-%m-%d", date: "$startTime" } },
-            week: { $isoWeek: "$startTime" },
             month: { $dateToString: { format: "%Y-%m", date: "$startTime" } },
           },
           totalDuration: { $sum: "$durationHours" },
