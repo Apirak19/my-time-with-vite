@@ -35,6 +35,7 @@ export default function HomePage() {
           .then((response) => response.json())
           .then((data) => {
             console.log(data.mostSpend);
+            console.log("peakHours", data.peakHours);
 
             const mostTimeSpentTasks = data.mostSpend.map((item: any) => {
               const utcDate = new Date(item.created_at);
