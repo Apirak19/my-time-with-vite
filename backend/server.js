@@ -92,15 +92,37 @@ app.get("/getStat", async (req, res) => {
     ]);
 
     // Peak productivity hours
-    const peakHours = await timerModel.aggregate([
+    const peakHour = await timerModel.aggregate([
       {
-        $group: {
-          _id: { $hour: "$startTime" }, // Grouping by hour of the day
-          totalDuration: { $sum: "$durationHours" },
+        $project: {
+          hour24: { $hour: { $toDate: "$created_at" } }, // Extract 24-hour format hour
         },
       },
-      { $sort: { totalDuration: -1 } }, // Sorting to find peak hours
+      {
+        $project: {
+          hour12: {
+            $add: [{ $mod: [{ $add: ["$hour24", 11] }, 12] }, 1], // Correct 12-hour format conversion
+          },
+          period: {
+            $cond: { if: { $lt: ["$hour24", 12] }, then: "AM", else: "PM" }, // Determine AM or PM
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { hour: "$hour12", period: "$period" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 }, // Sort by highest count
+      },
+      {
+        $limit: 1, // Get only the top 1 result
+      },
     ]);
+
+    console.log(peakHour);
 
     // Idle vs. Active time
     const idleVsActive = await timerModel.aggregate([
@@ -125,11 +147,11 @@ app.get("/getStat", async (req, res) => {
       totalByTimerType,
       mostSpend,
       timeSpentByPeriod,
-      peakHours,
+      peakHour,
       idleVsActive,
     });
-  } catch {
-    console.error("error occured");
+  } catch (error) {
+    console.error("error occured: ", error);
   }
 });
 

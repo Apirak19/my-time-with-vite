@@ -14,6 +14,14 @@ interface MostTimeSpentTask {
   created_at: string;
 }
 
+interface MostActiveTime {
+  _id: {
+    hour: number;
+    period: "AM" | "PM"; // Ensuring it's either "AM" or "PM"
+  };
+  count: number;
+}
+
 export default function HomePage() {
   const { items } = useContextA();
   const navigate = useNavigate();
@@ -25,6 +33,7 @@ export default function HomePage() {
   const [dashboardTotalTimeCard, setDashboardTotalTimeCard] = useState<
     DashboardTotalTimeCardType[]
   >([]);
+  const [mostActiveTime, setMostActiveTime] = useState<MostActiveTime[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,9 +43,6 @@ export default function HomePage() {
         fetch("http://localhost:3000/getStat")
           .then((response) => response.json())
           .then((data) => {
-            console.log(data.mostSpend);
-            console.log("peakHours", data.peakHours);
-
             const mostTimeSpentTasks = data.mostSpend.map((item: any) => {
               const utcDate = new Date(item.created_at);
               const bangkokDate = new Date(
@@ -81,8 +87,8 @@ export default function HomePage() {
                 (Number(item.totalDuration.$numberDecimal) / totalTime) * 100
               ),
             }));
-            console.log("Fetched Data:", formattedResult);
             setDashboardTotalTimeCard(formattedResult);
+            setMostActiveTime(data.peakHour);
           })
           .catch((error) => console.error("error: ", error));
       } catch (err) {
@@ -137,6 +143,20 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {/* Most active time of day */}
+          <h2 className="text-2xl mt-10">When are you most active?</h2>
+          {mostActiveTime?.map((stat, index) => (
+            <div
+              key={index}
+              className="w-full flex py-4 gap-2 justify-center bg-slate-600 rounded-md"
+            >
+              <div className="text-5xl">
+                {stat._id.hour} {stat._id.period}
+              </div>
+              <div>{stat.count} times</div>
+            </div>
+          ))}
 
           <div className="flex flex-col place-items-center py-8 gap-8">
             {items.map((item, index) => (
