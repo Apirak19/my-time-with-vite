@@ -155,6 +155,7 @@ export default function HomePage() {
                 {stat._id.hour} {stat._id.period}
               </div>
               <div>{stat.count} times</div>
+              <div>{stat.count} times</div>
             </div>
           ))}
 
